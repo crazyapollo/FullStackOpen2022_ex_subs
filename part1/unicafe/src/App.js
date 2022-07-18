@@ -15,15 +15,17 @@ const Button = (props) => {
 const StatisticsLine = (props) => {
   if (props.text === "positive") {
     return (
-      <>
-      {props.text} {props.value} %<br />
-    </>
+      <tr>
+        <td>{props.text}</td> 
+        <td>{props.value} %</td>
+      </tr>
     )
   }
   return(
-    <>
-      {props.text} {props.value} <br />
-    </>
+    <tr>
+      <td>{props.text}</td> 
+      <td>{props.value}</td>
+    </tr>
   )
   
 }
@@ -42,16 +44,16 @@ const Statistics = ({good, neutral, bad}) => {
   }
   return (
     <div>
-      <p>
-        <StatisticsLine text="good" value={good} />
-        <StatisticsLine text="neutral" value={neutral} />
-        <StatisticsLine text="bad" value={bad} />
-      </p>
-      <p>
-        <StatisticsLine text="sum" value={sum} />
-        <StatisticsLine text="average" value={average} />
-        <StatisticsLine text="positive" value={positive} />
-      </p>
+      <table>
+        <tbody>
+          <StatisticsLine text="good" value={good} />
+          <StatisticsLine text="neutral" value={neutral} />
+          <StatisticsLine text="bad" value={bad} />
+          <StatisticsLine text="sum" value={sum} />
+          <StatisticsLine text="average" value={average} />
+          <StatisticsLine text="positive" value={positive} />
+        </tbody>
+      </table>
     </div>
     
   )
@@ -63,12 +65,9 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-
   const increaseGood = () => setGood(good + 1)
   const increaseNeutral = () => setNeutral(neutral + 1)
   const increaseBad = () => setBad(bad + 1)
-  
-  console.log(good)
 
   return (
     <div>
