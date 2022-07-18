@@ -1,42 +1,38 @@
-const Hello = (props) => {
-  console.log("Hello from Hello func in component 'App'")
+const Hello = ({ name, age }) => {
+  // const name = props.name
+  // const age = props.age
 
-  const now = new Date()
-  const a = 10
-  const b = 20
+  // const { name, age } = props
 
-  return(
-    <div>
-      <p>Hello World, {props.age} year old {props.name}, it is {now.toString()}</p>
-      <p>
-        {a} plus {b} is {a + b}
-      </p>
-    </div>
-  )
-}
 
-const Footer = () => {
+  // const bornYear = () => {
+  //   const yearNow = new Date().getFullYear()
+  //   return yearNow - age
+  // }
+
+  const bornYear = () => new Date().getFullYear() - age
+
   return (
     <div>
-      greeting app created by <a href="https://github.com/crazyapollo">crazyapollo</a>
+      <p>
+        Hello {name}, you are {age} years old
+      </p>
+      <p>So you werer probably born in {bornYear()}</p>
     </div>
   )
 }
 
 const App = () => {
-  const name = "Peter"
-  const age = 19
+  const name = 'Peter'
+  const age = 10
 
   return (
-    <>
-      <h1>Grettings</h1>
-      <Hello name="George" age="12" />
-      <Hello name="Deasy" age={13+2}/>
+    <div>
+      <h1>Greetings</h1>
+      <Hello name="Maya" age={26 + 10} />
       <Hello name={name} age={age} />
-      <Footer />
-    </>
+    </div>
   )
 }
-
 
 export default App
