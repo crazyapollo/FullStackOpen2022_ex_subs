@@ -11,9 +11,6 @@ const ShowNummer = (props) => {
 
 const Nummernlist = (props) => {
 
-  console.log(props.persons)
-  console.log("Listeee: ", props.persons.map(person => person.name))
-
   return(
     <>
       {props.persons.map(person => <ShowNummer key={person.name} nummer={person.name} />)}
@@ -38,10 +35,17 @@ const App = () => {
     const newPersonObject = {  // new list object is created
       name: newName
     }
-    console.log(newPersonObject)
+    
+    const peps = persons.map(person => person.name)
+    const newpep = newPersonObject.name
+    if (peps.includes(newpep)) {
+      window.alert(`${newpep} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(newPersonObject))
+      setNewName('')
+    }
 
-    setPersons(persons.concat(newPersonObject))
-    setNewName('')
+    
   }
 
   return (
