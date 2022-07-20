@@ -24,6 +24,29 @@ const Nummernlist = (props) => {
   )
 }
 
+const Filter = (props) => {
+  return (
+    <>
+      filter shown with <input value={props.filter} onChange={props.change}/> 
+    </>
+  )
+}
+
+
+
+const AddPersonForm = (props) => {
+  return (
+    <form onSubmit={props.sub}>
+      <div>
+        name: <input value={props.name} onChange={props.changeName}/> <br />
+        phone number: <input value={props.pNumber} onChange={props.changeNum}/>
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([  // State: list of persons
@@ -69,17 +92,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-        filter shown with <input value={newFilt} onChange={handleChangeFilt}/> 
+        <Filter filter={newFilt} change={handleChangeFilt} />
       <h2>add a new number</h2>
-      <form onSubmit={addNewPerson}>
-        <div>
-          name: <input value={newName} onChange={handleChange}/> <br />
-          phone number: <input value={newNumber} onChange={handleChangeNum}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+        <AddPersonForm sub={addNewPerson} name={newName} changeName={handleChange} pNumber={newNumber} changeNum={handleChangeNum} />
       <h2>Numbers</h2>
       < Nummernlist persons={persons} filt={newFilt}/>  
     </div>
