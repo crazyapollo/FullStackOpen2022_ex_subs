@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import personService from './services/persons'
 
 const ShowNummer = (props) => {
+  console.log("props aus show number: ", props.die_id)
   console.log(props.filt.toUpperCase())
   if (props.der_name.toUpperCase().startsWith(props.filt.toUpperCase()) ) {
     return (
       <>
-        {props.der_name} {props.nummer}  <br />
+        {props.der_name} {props.nummer} 
+        <button key={props.id} onClick={() => props.wantDelete(props.die_id)}>delete</button> <br />
       </>
     )
   } else {
@@ -15,10 +17,25 @@ const ShowNummer = (props) => {
 }
 
 const Nummernlist = (props) => {
-  console.log(props.persons.map(person => <ShowNummer key={person.name} der_name={person.name} nummer={person.phone_number} filt={props.filt}/>))
+  // console.log(props.persons.map(person => 
+  //   <ShowNummer key={person.name} 
+  //               die_id={person.id} 
+  //               der_name={person.name} 
+  //               nummer={person.phone_number} 
+  //               filt={props.filt}
+  //               wantDelete={props.wantDelete}/>))
+  console.log("props aus nummern list: ", props.wantDelete)
   return(
     <>
-      {props.persons.map(person => <ShowNummer key={person.name} der_name={person.name} nummer={person.phone_number} filt={props.filt}/>)}
+      {props.persons.map(person => 
+        <ShowNummer key={person.name} 
+                    die_id={person.id} 
+                    der_name={person.name} 
+                    nummer={person.phone_number} 
+                    filt={props.filt}
+                    wantDelete={props.wantDelete}
+        />
+      )} 
     </>
     
   )
@@ -101,6 +118,20 @@ const App = () => {
 
   }
 
+
+  const wantDeleteNumber = (id) => {
+    if (window.confirm("Do you really want to delete this item?")) {
+        console.log("deleteeeed", id)
+        personService
+          .deletePersonNumber(id)
+        const newPersonSet = persons.filter(pers => pers.id !== id)
+        setPersons(newPersonSet)
+    } else {
+        console.log("alles kllar")
+    }
+  }
+
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -108,7 +139,7 @@ const App = () => {
       <h2>add a new number</h2>
         <AddPersonForm sub={addNewPerson} name={newName} changeName={handleChange} pNumber={newNumber} changeNum={handleChangeNum} />
       <h2>Numbers</h2>
-      < Nummernlist persons={persons} filt={newFilt}/>  
+      < Nummernlist persons={persons} filt={newFilt} wantDelete={wantDeleteNumber}/>  
     </div>
   )
 }
