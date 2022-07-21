@@ -1,5 +1,5 @@
-import { useState } from 'react'
-
+import { useState, useEffect } from 'react'
+import personService from './services/persons'
 
 const ShowNummer = (props) => {
   console.log(props.filt.toUpperCase())
@@ -49,14 +49,20 @@ const AddPersonForm = (props) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([  // State: list of persons
-    { name: 'Arto Hellas',
-      phone_number: 1234654654
-    }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')  // State: field of new name from form
   const [newNumber, setNewNumber] = useState('')  // State: field of new name from form
   const [newFilt, setNewFilt] = useState('')  // State: field of new name from form
+
+  // Effect to load all person data from server and set initial persons state
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        console.log("promise fulfilled")
+        setPersons(initialPersons)
+      })
+  }, [])
 
   const handleChange = (event) => {  // wenn man tippt wir neuer namens-State generiert
     setNewName(event.target.value)
@@ -82,9 +88,15 @@ const App = () => {
     if (peps.includes(newpep)) {
       window.alert(`${newpep} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(newPersonObject))
-      setNewName('')
-      setNewNumber('')
+
+      personService
+        .create(newPersonObject)
+        .then(returnedPersonDetails => {
+          setPersons(persons.concat(returnedPersonDetails))
+          setNewName('')
+          setNewNumber('')
+        })
+
     }
 
   }
