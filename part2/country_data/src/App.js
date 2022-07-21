@@ -13,22 +13,39 @@ const ShowCountryLine = ({value}) => {
 const ShowCountries = ({searchInfo, allCountries}) => {
   
   console.log(searchInfo)
-  console.log(allCountries)
 
-  const allCountriesFilt = allCountries.filter(o => o.toLowerCase().includes(searchInfo.toLowerCase()))
+  const allCountriesFilt = allCountries.filter(o => o.name.common.toLowerCase().includes(searchInfo.toLowerCase()))
   console.log("Filtered: ", allCountriesFilt)
 
-  if (allCountriesFilt.length > 20) {
-    return (<>Too many Laender</>)
+  if (allCountriesFilt.length > 10) {
+    return (<>Too many matches, please specify another filter...</>)
   } else {
     if (allCountriesFilt.length === 1) {
-      return (<> Tadaaaa: {allCountriesFilt}</>)
-    } else {
+      console.log(allCountriesFilt[0])
+      const langs = Object.values(allCountriesFilt[0].languages)
       return (
-        <>
-          {allCountriesFilt.map((derName) =>  <ShowCountryLine value={derName} />)}
-        </>
-      )
+        <div>
+          <h1>{allCountriesFilt[0].name.common} </h1>
+          capital {allCountriesFilt[0].capital} <br />
+          area {allCountriesFilt[0].area}
+
+          <h3>languages</h3>
+          <ul>
+            {langs.map(lang => <li key={lang}>{lang}</li>)  }
+          </ul>
+
+          <img src={allCountriesFilt[0].flags.png} alt={`Flag of $(allCountriesFilt[0].name.common)`} />
+        </div>)
+    } else {
+      if (allCountriesFilt.length === 0) {
+        return (<>No country found </>) 
+      } else {
+        return (
+          <>
+            {allCountriesFilt.map((derName) =>  <ShowCountryLine key={derName.cca3} value={derName.name.common} />)}
+          </>
+        )
+      }
     }
   }
 }
@@ -45,10 +62,10 @@ const App = () => {
         console.log('promise fulfilled')
         console.log(response.data[20].name.common)
 
-        const countryList = response.data.map(country => country.name.common)
-        console.log(countryList)
-
-        setDisplayedCountries(countryList)
+        // const countryList = response.data.map(country => country.name.common)
+        // console.log(countryList)
+        // setDisplayedCountries(countryList)
+        setDisplayedCountries(response.data)
 
       })
   }, [])
@@ -63,9 +80,10 @@ const App = () => {
   return ( 
     <div>
       find countries <input value={searchedCountry} onChange={handleCountryChange} />
-      <p>
-        <ShowCountries searchInfo={searchedCountry} allCountries={displayedCountries}/>
-      </p>
+      <br />
+      
+      <ShowCountries searchInfo={searchedCountry} allCountries={displayedCountries}/>
+      
       
       
 
